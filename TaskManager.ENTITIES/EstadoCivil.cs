@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskManager.ENTITIES
 {
-    public class Class1
+    class EstadoCivil
     {
+        public int Id { get; set; }
+        public string Descripcion { get; set; }
     }
 }
