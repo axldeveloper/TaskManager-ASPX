@@ -8,7 +8,7 @@ using TaskManager.ENTITIES;
 
 namespace TaskManager.DAL
 {
-    class UsuarioDAL
+    public class UsuarioDAL
     {
         public void Insertar(Usuario usuario)
         {
