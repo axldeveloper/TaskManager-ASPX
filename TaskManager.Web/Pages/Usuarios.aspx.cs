@@ -65,5 +65,12 @@ namespace TaskManager.Web.Pages
             List<Rol> ls = bll.Listar();
             return ls;
         }
+
+        [WebMethod]
+        public static List<Usuario> Filtrar(string nombre, string cedula)
+        {
+            UsuarioBLL bll = new UsuarioBLL();
+            return bll.Filtrar(nombre, cedula);
+        }
     }
 }

@@ -28,6 +28,14 @@
 
     <hr />
 
+    <h3>.:Buscar:.</h3>
+
+    <input type="text" id="txtBuscarNombre" placeholder="Buscar por nombre" />
+    <input type="text" id="txtBuscarCedula" placeholder="Buscar por cedula" />
+
+    <button onclick="filtrar()">Buscar</button>
+    <button onclick="listar()">Limpiar</button>
+
     <table border="1" id="tablaUsuarios">
         <thead>
             <tr>
@@ -51,8 +59,6 @@
         });
     });
 
-
-
     function guardar() {
 
         var usuario = {
@@ -60,8 +66,8 @@
             Apellido: $("#txtApellido").val(),
             Cedula: $("#txtCedula").val(),
             GeneroId: $("#ddlGenero").val(),
-            EstadoCivilId: $("#dllEstadoCivil").val(),
-            RolId: $("#dllRol").val(),
+            EstadoCivilId: $("#ddlEstadoCivil").val(),
+            RolId: $("#ddlRol").val(),
             FechaNacimiento: $("#txtFecha").val(),
             UserName: "test",
             Password: "1234"
@@ -164,6 +170,39 @@
                     html += `<option value="${x.Id}">${x.Descripcion}</option>`;
                 });
                 $("#ddlRol").html(html);
+            }
+        });
+    }
+
+    function filtrar() {
+
+        var nombre = $("#txtBuscarNombre").val();
+        var cedula = $("#txtBuscarCedula").val();
+
+        $.ajax({
+            url: "Usuarios.aspx/Filtrar",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                nombre: nombre,
+                cedula: cedula
+            }),
+            success: function (res) {
+
+                var data = res.d;
+                var html = "";
+
+                for (var i = 0; i < data.length; i++) {
+
+                    html += "<tr>";
+                    html += "<td>" + data[i].Nombre + "</td>";
+                    html += "<td>" + data[i].Apellido + "</td>";
+                    html += "<td>" + data[i].Cedula + "</td>";
+                    html += "<td><button onclick='eliminar(" + data[i].Id + ")'>Eliminar</button></td>";
+                    html += "</tr>";
+                }
+
+                $("#tablaUsuarios tbody").html(html);
             }
         });
     }

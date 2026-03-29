@@ -45,5 +45,10 @@ namespace TaskManager.BLL
 
             dal.Actualizar(usuario);
         }
+
+        public List<Usuario> Filtrar(string nombre, string cedula)
+        {
+            return dal.Filtrar(nombre, cedula);
+        }
     }
 }

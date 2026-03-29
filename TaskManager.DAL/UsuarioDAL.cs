@@ -104,6 +104,55 @@ namespace TaskManager.DAL
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public List<Usuario> Filtrar(string nombre, string cedula)
+        {
+            List<Usuario> lista = new List<Usuario>();
+
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                string query = "SELECT * FROM Usuarios WHERE 1=1";
+
+                if (!string.IsNullOrEmpty(nombre))
+                {
+                    query += " AND Nombre LIKE @Nombre";
+                }
+
+                if (!string.IsNullOrEmpty(cedula))
+                {
+                    query += " AND Cedula LIKE @Cedula";
+                }
+
+                SqlCommand cmd = new SqlCommand(query, con);
+
+                if (!string.IsNullOrEmpty(nombre))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", "%" + nombre + "%");
+                }
+
+                if (!string.IsNullOrEmpty(cedula))
+                {
+                    cmd.Parameters.AddWithValue("@Cedula", "%" + cedula + "%");
+                }
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    lista.Add(new Usuario
+                    {
+                        Id = (int)dr["Id"],
+                        Nombre = dr["Nombre"].ToString(),
+                        Apellido = dr["Apellido"].ToString(),
+                        Cedula = dr["Cedula"].ToString()
+                    });
+                }
+            }
+
+            return lista;
+        }
     }
 }
 
