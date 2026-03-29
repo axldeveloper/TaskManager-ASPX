@@ -41,5 +41,29 @@ namespace TaskManager.Web.Pages
             UsuarioBLL bll = new UsuarioBLL();
             bll.Eliminar(id);
         }
+
+        [WebMethod]
+        public static List<Genero> GetGeneros()
+        {
+            GeneroBLL bll = new GeneroBLL();
+            List<Genero> ls = bll.Listar();
+            return ls;
+        }
+
+        [WebMethod]
+        public static List<EstadoCivil> GetEstadoCivil()
+        {
+            EstadoCiviLBLL bll = new EstadoCiviLBLL();
+            List<EstadoCivil> ls = bll.Listar();
+            return ls;
+        }
+
+        [WebMethod]
+        public static List<Rol> GetRoles()
+        {
+            RolBLL bll = new RolBLL();
+            List<Rol> ls = bll.Listar();
+            return ls;
+        }
     }
 }

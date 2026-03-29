@@ -6,6 +6,9 @@
     <title>Usuarios</title>
 
     <script src="../Scripts/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 </head>
 <body>
 
@@ -13,7 +16,13 @@
 
     <input type="text" id="txtNombre" placeholder="Nombre" title="Ingrese el nombre" />
     <input type="text" id="txtApellido" placeholder="Apellido" />
-    <input type="text" id="txtCedula" placeholder="Cédula" />
+    <input type="text" id="txtCedula" placeholder="Cedula" />
+
+    <input type="date" id="txtFecha" title="Seleccione fecha de nacimiento" />
+
+    <select id="ddlGenero" title="Seleccione genero"></select>
+    <select id="ddlEstadoCivil" title="Seleccione estado civil"></select>
+    <select id="ddlRol" title="Seleccione rol"></select>
 
     <button onclick="guardar()">Guardar</button>
 
@@ -36,19 +45,27 @@
 
 <script>
 
-function guardar() {
+    $(function () {
+        $("#txtFecha").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
 
-    var usuario = {
-        Nombre: $("#txtNombre").val(),
-        Apellido: $("#txtApellido").val(),
-        Cedula: $("#txtCedula").val(),
-        GeneroId: 1,
-        EstadoCivilId: 1,
-        RolId: 1,
-        FechaNacimiento: "2000-01-01",
-        UserName: "test",
-        Password: "1234"
-    };
+
+
+    function guardar() {
+
+        var usuario = {
+            Nombre: $("#txtNombre").val(),
+            Apellido: $("#txtApellido").val(),
+            Cedula: $("#txtCedula").val(),
+            GeneroId: $("#ddlGenero").val(),
+            EstadoCivilId: $("#dllEstadoCivil").val(),
+            RolId: $("#dllRol").val(),
+            FechaNacimiento: $("#txtFecha").val(),
+            UserName: "test",
+            Password: "1234"
+        };
 
     $.ajax({
         url: "Usuarios.aspx/Guardar",
@@ -68,48 +85,92 @@ function guardar() {
     });
 }
 
-function listar() {
+    function listar() {
 
-    $.ajax({
-        url: "Usuarios.aspx/Listar",
-        method: "POST",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (res) {
+        $.ajax({
+            url: "Usuarios.aspx/Listar",
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (res) {
 
-            var data = res.d;
-            var html = "";
+                var data = res.d;
+                var html = "";
 
-            data.forEach(function (u) {
-                html += "<tr>";
-                html += "<td>" + u.Nombre + "</td>";
-                html += "<td>" + u.Apellido + "</td>";
-                html += "<td>" + u.Cedula + "</td>";
-                html += "<td><button onclick='eliminar(" + u.Id + ")'>Eliminar</button></td>";
-                html += "</tr>";
-            });
+                data.forEach(function (u) {
+                    html += "<tr>";
+                    html += "<td>" + u.Nombre + "</td>";
+                    html += "<td>" + u.Apellido + "</td>";
+                    html += "<td>" + u.Cedula + "</td>";
+                    html += "<td><button onclick='eliminar(" + u.Id + ")'>Eliminar</button></td>";
+                    html += "</tr>";
+                });
 
-            $("#tablaUsuarios tbody").html(html);
-        }
+                $("#tablaUsuarios tbody").html(html);
+            }
+        });
+    }
+
+    function eliminar(id) {
+
+        $.ajax({
+            url: "Usuarios.aspx/Eliminar",
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ id: id }),
+            success: function () {
+                listar();
+            }
+        });
+    }
+
+    function cargarCombos() {
+
+        $.ajax({
+            url: "Usuarios.aspx/GetGeneros",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (res) {
+                let html = "";
+                res.d.forEach(x => {
+                    html += `<option value="${x.Id}">${x.Descripcion}</option>`;
+                });
+                $("#ddlGenero").html(html);
+            }
+        });
+
+        $.ajax({
+            url: "Usuarios.aspx/GetEstadoCivil",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                let html = "";
+                res.d.forEach(x => {
+                    html += `<option value="${x.Id}">${x.Descripcion}</option>`;
+                });
+                $("#ddlEstadoCivil").html(html);
+            }
+        });
+
+        $.ajax({
+            url: "Usuarios.aspx/GetRoles",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                let html = "";
+                res.d.forEach(x => {
+                    html += `<option value="${x.Id}">${x.Descripcion}</option>`;
+                });
+                $("#ddlRol").html(html);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        listar();
+        cargarCombos();
     });
-}
-
-function eliminar(id) {
-
-    $.ajax({
-        url: "Usuarios.aspx/Eliminar",
-        method: "POST",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({ id: id }),
-        success: function () {
-            listar();
-        }
-    });
-}
-
-$(document).ready(function () {
-    listar();
-});
 
 </script>
