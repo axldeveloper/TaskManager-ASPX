@@ -10,6 +10,6 @@
 namespace TaskManager.Web.Pages {
     
     
-    public partial class Home {
+    public partial class Login {
     }
 }

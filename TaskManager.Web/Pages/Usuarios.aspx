@@ -26,6 +26,8 @@
 
     <button onclick="guardar()">Guardar</button>
 
+    <button onclick="logout()">Cerrar sesion</button>
+
     <hr />
 
     <h3>.:Buscar:.</h3>
@@ -205,6 +207,11 @@
                 $("#tablaUsuarios tbody").html(html);
             }
         });
+    }
+
+    function logout() {
+        document.cookie = "usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "Login.aspx";
     }
 
     $(document).ready(function () {

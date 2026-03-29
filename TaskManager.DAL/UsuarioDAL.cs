@@ -153,6 +153,33 @@ namespace TaskManager.DAL
 
             return lista;
         }
+
+        public Usuario Login(string user, string pass)
+        {
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                string query = "SELECT * FROM Usuarios WHERE Usuario = @user AND Password = @pass";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@user", user);
+                cmd.Parameters.AddWithValue("@pass", pass);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    return new Usuario
+                    {
+                        Id = (int)dr["Id"],
+                        UserName = dr["Usuario"].ToString()
+                    };
+                }
+            }
+
+            return null;
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Services;
 using TaskManager.BLL;
 using TaskManager.ENTITIES;
@@ -10,7 +11,10 @@ namespace TaskManager.Web.Pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (HttpContext.Current.Request.Cookies["usuario"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
         }
 
         [WebMethod]

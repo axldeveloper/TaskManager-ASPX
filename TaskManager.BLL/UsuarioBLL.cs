@@ -50,5 +50,10 @@ namespace TaskManager.BLL
         {
             return dal.Filtrar(nombre, cedula);
         }
+
+        public Usuario Login(string user, string pass)
+        {
+            return dal.Login(user, pass);
+        }
     }
 }
