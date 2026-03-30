@@ -18,7 +18,15 @@ namespace TaskManager.Web.Pages
 
             if (usuario != null)
             {
-                HttpContext.Current.Response.Cookies["usuario"].Value = usuario.UserName;
+                HttpCookie cookie = new HttpCookie("usuario");
+
+                cookie["Id"] = usuario.Id.ToString();
+                cookie["UserName"] = usuario.UserName;
+                cookie["Nombre"] = usuario.Nombre;
+
+                cookie.Expires = DateTime.Now.AddHours(1);
+
+                HttpContext.Current.Response.Cookies.Add(cookie);
                 return "OK";
             }
 

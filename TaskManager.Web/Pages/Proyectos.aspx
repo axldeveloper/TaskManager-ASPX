@@ -85,8 +85,14 @@
         }
 
         function logout() {
-            document.cookie = "usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "Login.aspx";
+            $.ajax({
+                url: "Home.aspx/Logout",
+                type: "POST",
+                contentType: "application/json",
+                success: function () {
+                    window.location.href = "Login.aspx";
+                }
+            });
         }
 
         $(document).ready(function () {

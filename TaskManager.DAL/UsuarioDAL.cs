@@ -67,8 +67,12 @@ namespace TaskManager.DAL
             return lista;
         }
 
-        public void Eliminar(int id)
+        public string Eliminar(int id)
         {
+            if (TieneTareas(id))
+            {
+                return "NO_ELIMINAR";
+            }
             using (SqlConnection con = DbHelper.GetConnection())
             {
                 con.Open();
@@ -80,6 +84,8 @@ namespace TaskManager.DAL
 
                 cmd.ExecuteNonQuery();
             }
+
+            return "OK";
         }
 
         public void Actualizar(Usuario u)
@@ -179,6 +185,22 @@ namespace TaskManager.DAL
             }
 
             return null;
+        }
+
+        public bool TieneTareas(int usuarioId)
+        {
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Tareas WHERE UsuarioAsignadoId = @Id", con);
+
+                cmd.Parameters.AddWithValue("@Id", usuarioId);
+
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
         }
     }
 }

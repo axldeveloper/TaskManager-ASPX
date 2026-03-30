@@ -29,13 +29,13 @@ namespace TaskManager.BLL
             return dal.Listar();
         }
 
-        public void Eliminar(int id)
+        public string Eliminar(int id)
         {
             if (id <= 0)
             {
                 throw new Exception("Id invalido.");
             }
-            dal.Eliminar(id);
+            return dal.Eliminar(id);
         }
 
         public void Actualizar(Usuario usuario)

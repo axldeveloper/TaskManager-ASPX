@@ -40,10 +40,10 @@ namespace TaskManager.Web.Pages
         }
 
         [WebMethod]
-        public static void Eliminar(int id)
+        public static string Eliminar(int id)
         {
             UsuarioBLL bll = new UsuarioBLL();
-            bll.Eliminar(id);
+            return bll.Eliminar(id);
         }
 
         [WebMethod]

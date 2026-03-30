@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComentarioDAL.cs" />
     <Compile Include="DbHelper.cs" />
     <Compile Include="EstadoCivilDAL.cs" />
     <Compile Include="GeneroDAL.cs" />

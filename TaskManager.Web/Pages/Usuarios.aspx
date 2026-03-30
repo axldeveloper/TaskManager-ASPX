@@ -7,8 +7,6 @@
 
     <script src="../Scripts/jquery-3.6.0.min.js"></script>
 
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 </head>
 <body>
 
@@ -17,6 +15,9 @@
     <input type="text" id="txtNombre" placeholder="Nombre" title="Ingrese el nombre" />
     <input type="text" id="txtApellido" placeholder="Apellido" />
     <input type="text" id="txtCedula" placeholder="Cedula" />
+
+    <input type="text" id="txtUserName" placeholder="Usuario" />
+    <input type="password" id="txtPassword" placeholder="Contraseña" />
 
     <input type="date" id="txtFecha" title="Seleccione fecha de nacimiento" />
 
@@ -71,9 +72,14 @@
             EstadoCivilId: $("#ddlEstadoCivil").val(),
             RolId: $("#ddlRol").val(),
             FechaNacimiento: $("#txtFecha").val(),
-            UserName: "test",
-            Password: "1234"
+            UserName: $("#txtUserName").val(),
+            Password: $("#txtPassword").val()
         };
+
+        if (!usuario.UserName || !usuario.Password) {
+            alert("Usuario y contraseña son obligatorios");
+            return;
+        }
 
     $.ajax({
         url: "Usuarios.aspx/Guardar",
@@ -84,6 +90,7 @@
 
         success: function (res) {
             alert(res.d);
+            limpiarFormulario();
             listar();
         },
         
@@ -127,7 +134,12 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify({ id: id }),
-            success: function () {
+            success: function (res) {
+
+                if (res.d === "NO_ELIMINAR") {
+                    alert("El usuario tiene tareas asignadas.");
+                    return;
+                }
                 listar();
             }
         });
@@ -210,8 +222,26 @@
     }
 
     function logout() {
-        document.cookie = "usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = "Login.aspx";
+        $.ajax({
+            url: "Home.aspx/Logout",
+            type: "POST",
+            contentType: "application/json",
+            success: function () {
+                window.location.href = "Login.aspx";
+            }
+        });
+    }
+
+    function limpiarFormulario() {
+        $("#txtNombre").val("");
+        $("#txtApellido").val("");
+        $("#txtCedula").val("");
+        $("#txtFecha").val("");
+        $("#ddlGenero").val("");
+        $("#ddlEstadoCivil").val("");
+        $("#ddlRol").val("");
+        $("#txtUserName").val("");
+        $("#txtPassword").val("");
     }
 
     $(document).ready(function () {

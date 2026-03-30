@@ -46,8 +46,16 @@
 
     </table>
 
-    <script>
+    <hr />
 
+    <h3>Comentarios</h3>
+
+    <textarea id="txtComentario" placeholder="Escribe un comentario"></textarea>
+    <button onclick="guardarComentario()">Comentar</button>
+    <ul id="listaComentarios"></ul>
+
+    <script>
+        let tareaActualId = 0;
         let tareaSeleccionada = null;
         let listaGlobal = [];
 
@@ -92,7 +100,7 @@
 
                     let html = "";
                     res.d.forEach(t => {
-                        html += `<tr><td>${t.Titulo}</td><td>${t.NombreProyecto}</td><td>${t.NombreUsuario}</td><td>${t.Estado}</td><td><button onclick="editar(${t.Id})">Editar</button><button onclick="eliminar(${t.Id})">Eliminar</button></td></tr>`;
+                        html += `<tr><td>${t.Titulo}</td><td>${t.NombreProyecto}</td><td>${t.NombreUsuario}</td><td>${t.Estado}</td><td><button onclick="seleccionarTarea(${t.Id})">Ver</button></td><td><button onclick="editar(${t.Id})">Editar</button><button onclick="eliminar(${t.Id})">Eliminar</button></td></tr>`;
                     });
                     $("#tabla").html(html);
                 }
@@ -119,6 +127,7 @@
                 success: function (res) {
                     tareaSeleccionada = null;
                     alert(res.d);
+                    limpiarFormualrio();
                     listar();
                 }
             });
@@ -128,12 +137,15 @@
             let t = listaGlobal.find(x => x.Id == id);
 
             tareaSeleccionada = t;
+            tareaActualId = id;
 
             $("#txtTitulo").val(t.Titulo);
             $("#txtDescripcion").val(t.Descripcion);
             $("#ddlProyecto").val(t.ProyectoId);
             $("#ddlUsuario").val(t.UsuarioAsignadoId);
             $("#ddlEstado").val(t.Estado);
+
+            cargarComentarios(id);
         }
 
         function eliminar(id) {
@@ -150,9 +162,69 @@
             });
         }
 
+        function cargarComentarios(id) {
+            $.ajax({
+                url: "Tareas.aspx/GetComentarios",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ tareaId: id }),
+                success: function (res) {
+
+                    let html = "";
+
+                    res.d.forEach(c => {
+                        html += `<li><b>${c.NombreUsuario}</b>: ${c.Texto}</li>`;
+                    });
+
+                    $("#listaComentarios").html(html);
+                }
+            });
+        }
+
+        function guardarComentario() {
+
+            let c = {
+                TareaId: tareaActualId,
+                Texto: $("#txtComentario").val()
+            };
+
+            $.ajax({
+                url: "Tareas.aspx/GuardarComentario",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ c: c }),
+                success: function () {
+                    $("#txtComentario").val("");
+                    cargarComentarios(tareaActualId);
+                }
+            });
+        }
+
+        function seleccionarTarea(id) {
+            tareaActualId = id;
+            cargarComentarios(id);
+            limpiarFormualrio();
+        }
+
+        function limpiarFormualrio() {
+            $("#txtTitulo").val("");
+            $("#txtDescripcion").val("");
+            $("#ddlProyecto").val("");
+            $("#ddlUsuario").val("");
+            $("#ddlEstado").val("Pendiente");
+
+            tareaSeleccionada = null;
+        }
+
         function logout() {
-            document.cookie = "usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "Login.aspx";
+            $.ajax({
+                url: "Home.aspx/Logout",
+                type: "POST",
+                contentType: "application/json",
+                success: function () {
+                    window.location.href = "Login.aspx";
+                }
+            });
         }
 
         $(document).ready(function () {

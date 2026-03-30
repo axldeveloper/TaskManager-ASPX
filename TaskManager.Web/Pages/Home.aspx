@@ -4,6 +4,9 @@
 <html>
 <head>
     <title>Task Manager</title>
+
+    <script src="../Scripts/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 
@@ -35,8 +38,14 @@
         }
 
         function logout() {
-            document.cookie = "usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "Login.aspx";
+            $.ajax({
+                url: "Home.aspx/Logout",
+                type: "POST",
+                contentType: "application/json",
+                success: function () {
+                    window.location.href = "Login.aspx";
+                }
+            });
         }
     </script>
 

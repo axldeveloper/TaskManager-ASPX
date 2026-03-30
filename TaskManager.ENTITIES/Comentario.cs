@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.ENTITIES
 {
-    class Comentario
+    public class Comentario
     {
         public int Id { get; set; }
 
@@ -15,5 +15,7 @@ namespace TaskManager.ENTITIES
 
         public string Texto { get; set; }
         public DateTime Fecha { get; set; }
+
+        public string NombreUsuario { get; set; }
     }
 }

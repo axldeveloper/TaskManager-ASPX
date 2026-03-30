@@ -54,5 +54,27 @@ namespace TaskManager.Web.Pages
             new TareaBLL().Eliminar(id);
             return "OK";
         }
+
+        [WebMethod]
+        public static List<Comentario> GetComentarios(int tareaId)
+        {
+            return new ComentarioBLL().ListarPorTarea(tareaId);
+        }
+
+        [WebMethod]
+        public static string GuardarComentario(Comentario c)
+        {
+            var cookie = HttpContext.Current.Request.Cookies["usuario"];
+            if (cookie == null)
+            {
+                return "NO SESSION";
+            }
+
+            int usuarioId = Convert.ToInt32(cookie["Id"]);
+            c.UsuarioId = usuarioId;
+
+            new ComentarioBLL().Guardar(c);
+            return "OK";
+        }
     }
 }
