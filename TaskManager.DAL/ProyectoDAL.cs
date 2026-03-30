@@ -50,5 +50,57 @@ namespace TaskManager.DAL
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public void Actualizar(Proyecto p)
+        {
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(@"
+                                        UPDATE Proyectos SET
+                                        Nombre=@Nombre,
+                                        Descripcion=@Descripcion,
+                                        FechaInicio=@FechaInicio,
+                                        FechaFin=@FechaFin,
+                                        Estado=@Estado
+                                        WHERE Id=@Id", con);
+
+                cmd.Parameters.AddWithValue("@Id", p.Id);
+                cmd.Parameters.AddWithValue("@Nombre", p.Nombre);
+                cmd.Parameters.AddWithValue("@Descripcion", p.Descripcion);
+                cmd.Parameters.AddWithValue("@FechaInicio", p.FechaInicio);
+                cmd.Parameters.AddWithValue("@FechaFin", p.FechaFin);
+                cmd.Parameters.AddWithValue("@Estado", p.Estado);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public string Eliminar(int id)
+        {
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                SqlCommand check = new SqlCommand("SELECT COUNT(*) FROM Tareas WHERE ProyectoId=@Id", con);
+
+                check.Parameters.AddWithValue("@Id", id);
+
+                int count = (int)check.ExecuteScalar();
+
+                if (count > 0)
+                {
+                    return "RELACIONADO";
+                }                    
+
+                SqlCommand cmd = new SqlCommand("DELETE FROM Proyectos WHERE Id=@Id", con);
+
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
+            }
+
+            return "OK";
+        }
     }
 }

@@ -12,8 +12,8 @@
 <body>
     <h2>Tareas</h2>
 
-    <input type="text" id="txtTitulo" placeholder="Título" />
-    <input type="text" id="txtDescripcion" placeholder="Descripción" />
+    <input type="text" id="txtTitulo" placeholder="Título" title="Ingrese el titulo" />
+    <input type="text" id="txtDescripcion" placeholder="Descripción" title="Ingrese la descripcion" />
     
     <select id="ddlProyecto"></select>
     <select id="ddlUsuario"></select>
@@ -53,6 +53,10 @@
     <textarea id="txtComentario" placeholder="Escribe un comentario"></textarea>
     <button onclick="guardarComentario()">Comentar</button>
     <ul id="listaComentarios"></ul>
+
+    <hr />
+    <button onclick="irUsuarios()">Usuarios</button>
+    <button onclick="irProyectos()">Proyectos</button>
 
     <script>
         let tareaActualId = 0;
@@ -225,6 +229,14 @@
                     window.location.href = "Login.aspx";
                 }
             });
+        }
+
+        function irUsuarios() {
+            window.location.href = "Usuarios.aspx";
+        }
+
+        function irProyectos() {
+            window.location.href = "Proyectos.aspx";
         }
 
         $(document).ready(function () {

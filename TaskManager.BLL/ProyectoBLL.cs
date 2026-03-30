@@ -21,5 +21,15 @@ namespace TaskManager.BLL
         {
             dal.Guardar(p);
         }
+
+        public void Actualizar(Proyecto p)
+        {
+            dal.Actualizar(p);
+        }
+
+        public string Eliminar(int id)
+        {
+            return dal.Eliminar(id);
+        }
     }
 }

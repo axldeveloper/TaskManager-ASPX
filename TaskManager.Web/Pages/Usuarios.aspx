@@ -13,10 +13,10 @@
     <h2>Gestión de Usuarios</h2>
 
     <input type="text" id="txtNombre" placeholder="Nombre" title="Ingrese el nombre" />
-    <input type="text" id="txtApellido" placeholder="Apellido" />
-    <input type="text" id="txtCedula" placeholder="Cedula" />
+    <input type="text" id="txtApellido" placeholder="Apellido" title="Ingrese el apellido" />
+    <input type="text" id="txtCedula" placeholder="Cedula" title="Ingrese la cedula" />
 
-    <input type="text" id="txtUserName" placeholder="Usuario" />
+    <input type="text" id="txtUserName" placeholder="Usuario" title="Ingrese el usuario para el sistema" />
     <input type="password" id="txtPassword" placeholder="Contraseña" />
 
     <input type="date" id="txtFecha" title="Seleccione fecha de nacimiento" />
@@ -50,6 +50,10 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <hr />
+    <button onclick="irProyectos()">Proyectos</button>
+    <button onclick="irTareas()">Tareas</button>
 
 </body>
 </html>
@@ -242,6 +246,14 @@
         $("#ddlRol").val("");
         $("#txtUserName").val("");
         $("#txtPassword").val("");
+    }
+
+    function irProyectos() {
+        window.location.href = "Proyectos.aspx";
+    }
+
+    function irTareas() {
+        window.location.href = "Tareas.aspx";
     }
 
     $(document).ready(function () {

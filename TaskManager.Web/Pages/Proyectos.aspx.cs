@@ -34,5 +34,18 @@ namespace TaskManager.Web.Pages
             bll.Guardar(p);
             return "OK";
         }
+
+        [WebMethod]
+        public static string Actualizar(Proyecto p)
+        {
+            new ProyectoBLL().Actualizar(p);
+            return "OK";
+        }
+
+        [WebMethod]
+        public static string Eliminar(int id)
+        {
+            return new ProyectoBLL().Eliminar(id);
+        }
     }
 }
