@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.ENTITIES
 {
-    class Tarea
+    public class Tarea
     {
         public int Id { get; set; }
 
@@ -16,5 +16,8 @@ namespace TaskManager.ENTITIES
         public string Estado { get; set; }
 
         public int UsuarioAsignadoId { get; set; }
+
+        public string NombreProyecto { get; set; }
+        public string NombreUsuario { get; set; }
     }
 }

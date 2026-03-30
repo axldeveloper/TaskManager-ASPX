@@ -15,7 +15,7 @@
 
     <button onclick="irUsuarios()">Usuarios</button>
     <button onclick="irProyectos()">Proyectos</button>
-<%--    <button onclick="irTareas()">Tareas</button>--%>
+    <button onclick="irTareas()">Tareas</button>
 
     <br><br>
 
@@ -30,9 +30,9 @@
             window.location.href = "Proyectos.aspx";
         }
 
-        //function irTareas() {
-        //    window.location.href = "Tareas.aspx";
-        //}
+        function irTareas() {
+            window.location.href = "Tareas.aspx";
+        }
 
         function logout() {
             document.cookie = "usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

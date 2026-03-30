@@ -108,6 +108,7 @@
     <Content Include="Pages\Home.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\Proyectos.aspx" />
+    <Content Include="Pages\Tareas.aspx" />
     <Content Include="Pages\Usuarios.aspx" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
     <Content Include="Web.config" />
@@ -143,6 +144,13 @@
     </Compile>
     <Compile Include="Pages\Proyectos.aspx.designer.cs">
       <DependentUpon>Proyectos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tareas.aspx.cs">
+      <DependentUpon>Tareas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Tareas.aspx.designer.cs">
+      <DependentUpon>Tareas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Usuarios.aspx.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>
