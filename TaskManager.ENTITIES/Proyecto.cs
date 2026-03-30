@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.ENTITIES
 {
-    class Proyecto
+    public class Proyecto
     {
         public int Id { get; set; }
 
@@ -15,5 +15,6 @@ namespace TaskManager.ENTITIES
 
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
+        public string Estado { get; set; }
     }
 }

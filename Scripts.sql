@@ -52,7 +52,8 @@ CREATE TABLE Proyectos (
     Nombre VARCHAR(100),
     Descripcion VARCHAR(255),
     FechaInicio DATE,
-    FechaFin DATE
+    FechaFin DATE,
+	Estado VARCHAR(50) DEFAULT 'Activo'
 );
 
 -- Tabla Tareas
