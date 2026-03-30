@@ -47,6 +47,10 @@
     </table>
 
     <script>
+
+        let tareaSeleccionada = null;
+        let listaGlobal = [];
+
         function cargarProyectos() {
             $.ajax({
                 url: "Tareas.aspx/GetProyectos",
@@ -83,9 +87,12 @@
                 type: "POST",
                 contentType: "application/json",
                 success: function (res) {
+
+                    listaGlobal = res.d;
+
                     let html = "";
                     res.d.forEach(t => {
-                        html += `<tr><td>${t.Titulo}</td><td>${t.NombreProyecto}</td><td>${t.NombreUsuario}</td><td>${t.Estado}</td></tr>`;
+                        html += `<tr><td>${t.Titulo}</td><td>${t.NombreProyecto}</td><td>${t.NombreUsuario}</td><td>${t.Estado}</td><td><button onclick="editar(${t.Id})">Editar</button><button onclick="eliminar(${t.Id})">Eliminar</button></td></tr>`;
                     });
                     $("#tabla").html(html);
                 }
@@ -94,6 +101,7 @@
 
         function guardar() {
             let t = {
+                Id: tareaSeleccionada ? tareaSeleccionada.Id : 0,
                 Titulo: $("#txtTitulo").val(),
                 Descripcion: $("#txtDescripcion").val(),
                 ProyectoId: $("#ddlProyecto").val(),
@@ -101,13 +109,42 @@
                 Estado: $("#ddlEstado").val()
             };
 
+            let url = tareaSeleccionada ? "Tareas.aspx/Actualizar" : "Tareas.aspx/Guardar";
+
             $.ajax({
-                url: "Tareas.aspx/Guardar",
+                url: url,
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({ t: t }),
                 success: function (res) {
+                    tareaSeleccionada = null;
                     alert(res.d);
+                    listar();
+                }
+            });
+        }
+
+        function editar(id) {
+            let t = listaGlobal.find(x => x.Id == id);
+
+            tareaSeleccionada = t;
+
+            $("#txtTitulo").val(t.Titulo);
+            $("#txtDescripcion").val(t.Descripcion);
+            $("#ddlProyecto").val(t.ProyectoId);
+            $("#ddlUsuario").val(t.UsuarioAsignadoId);
+            $("#ddlEstado").val(t.Estado);
+        }
+
+        function eliminar(id) {
+            if (!confirm("¿Eliminar tarea?")) return;
+
+            $.ajax({
+                url: "Tareas.aspx/Eliminar",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ id: id }),
+                success: function () {
                     listar();
                 }
             });

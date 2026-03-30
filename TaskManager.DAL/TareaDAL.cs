@@ -70,5 +70,45 @@ namespace TaskManager.DAL
             }
         }
 
+        public void Actualizar(Tarea t)
+        {
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    UPDATE Tareas
+                        SET ProyectoId=@ProyectoId,
+                            Titulo=@Titulo,
+                            Descripcion=@Descripcion,
+                            Estado=@Estado,
+                            UsuarioAsignadoId=@UsuarioAsignadoId
+                        WHERE Id=@Id", con);
+
+                cmd.Parameters.AddWithValue("@Id", t.Id);
+                cmd.Parameters.AddWithValue("@ProyectoId", t.ProyectoId);
+                cmd.Parameters.AddWithValue("@Titulo", t.Titulo);
+                cmd.Parameters.AddWithValue("@Descripcion", t.Descripcion);
+                cmd.Parameters.AddWithValue("@Estado", t.Estado);
+                cmd.Parameters.AddWithValue("@UsuarioAsignadoId", t.UsuarioAsignadoId);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Eliminar(int id)
+        {
+            using (SqlConnection con = DbHelper.GetConnection())
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("DELETE FROM Tareas WHERE Id=@Id", con);
+
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

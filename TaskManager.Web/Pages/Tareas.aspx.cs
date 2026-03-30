@@ -40,5 +40,19 @@ namespace TaskManager.Web.Pages
         {
             return new UsuarioBLL().Listar();
         }
+
+        [WebMethod]
+        public static string Actualizar(Tarea t)
+        {
+            new TareaBLL().Actualizar(t);
+            return "OK";
+        }
+
+        [WebMethod]
+        public static string Eliminar(int id)
+        {
+            new TareaBLL().Eliminar(id);
+            return "OK";
+        }
     }
 }
